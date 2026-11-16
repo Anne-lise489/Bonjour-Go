@@ -1,0 +1,460 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FLEmi – Apprendre le français</title>
+
+<style>
+:root {
+  --vert: #A7CBB8;
+  --jaune: #FFCF56;
+  --corail: #FF8066;
+  --bleu: #182B45;
+  --violet: #A68BE0;
+  --fond: #F5F8F6;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background: var(--fond);
+  color: var(--bleu);
+  line-height: 1.6;
+}
+
+header {
+  background: var(--bleu);
+  color: white;
+  padding: 18px 7%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+  color: var(--jaune);
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+nav a:hover {
+  color: var(--jaune);
+}
+
+.hero {
+  text-align: center;
+  padding: 75px 20px;
+  background: var(--vert);
+}
+
+.hero h1 {
+  font-size: clamp(30px, 5vw, 46px);
+  margin-bottom: 15px;
+}
+
+.hero p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.btn {
+  display: inline-block;
+  background: var(--jaune);
+  color: var(--bleu);
+  padding: 13px 25px;
+  border-radius: 25px;
+  font-weight: bold;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+}
+
+section {
+  padding: 55px 7%;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 29px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px #182B4515;
+  transition: transform .2s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.card a {
+  color: var(--bleu);
+  font-weight: bold;
+}
+
+.card:nth-child(1) { border-top: 6px solid var(--vert); }
+.card:nth-child(2) { border-top: 6px solid var(--jaune); }
+.card:nth-child(3) { border-top: 6px solid var(--corail); }
+.card:nth-child(4) { border-top: 6px solid var(--violet); }
+.card:nth-child(5) { border-top: 6px solid var(--bleu); }
+
+.levels {
+  background: var(--bleu);
+  color: white;
+  text-align: center;
+}
+
+.level-list {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+.level {
+  background: var(--jaune);
+  color: var(--bleu);
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.quiz {
+  background: white;
+  max-width: 650px;
+  margin: auto;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 3px 12px #182B4515;
+}
+
+.quiz button {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: 1px solid var(--vert);
+  border-radius: 9px;
+  background: white;
+  color: var(--bleu);
+  cursor: pointer;
+  text-align: left;
+}
+
+.quiz button:hover {
+  background: var(--vert);
+}
+
+#resultat {
+  font-weight: bold;
+  margin-top: 15px;
+}
+
+.assistant {
+  background: #EEE9FA;
+  text-align: center;
+}
+
+footer {
+  background: var(--bleu);
+  color: white;
+  padding: 25px;
+  text-align: center;
+}
+
+/* Fenêtre de discussion */
+
+.chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: var(--violet);
+  color: var(--bleu);
+  border: none;
+  border-radius: 50px;
+  padding: 15px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.chat-window {
+  display: none;
+  position: fixed;
+  bottom: 85px;
+  right: 20px;
+  width: min(340px, calc(100vw - 40px));
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 25px #182B4540;
+  z-index: 10;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: var(--bleu);
+  color: white;
+  padding: 15px;
+}
+
+.chat-messages {
+  height: 230px;
+  padding: 12px;
+  overflow-y: auto;
+  font-size: 14px;
+}
+
+.chat-input {
+  display: flex;
+  border-top: 1px solid #ddd;
+}
+
+.chat-input input {
+  flex: 1;
+  min-width: 0;
+  padding: 12px;
+  border: none;
+  outline: none;
+}
+
+.chat-input button {
+  background: var(--jaune);
+  border: none;
+  padding: 12px;
+  cursor: pointer;
+}
+
+@media (max-width: 600px) {
+  header { justify-content: center; }
+  nav { justify-content: center; }
+  section { padding: 40px 5%; }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">🌍 FLEmi</div>
+  <nav>
+    <a href="#accueil">Accueil</a>
+    <a href="#rubriques">Mes activités</a>
+    <a href="#parcours">Mon parcours</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#assistant">Mon assistant</a>
+  </nav>
+</header>
+
+<main>
+
+<section class="hero" id="accueil">
+  <h1>Bienvenue sur FLEmi ! 👋</h1>
+  <p>Le français devient un jeu d'enfant !</p>
+  <p>Écoute, lis, parle et écris en français.
+     Apprends à ton rythme et amuse-toi !</p>
+  <a href="#rubriques" class="btn">
+    Je commence à apprendre !
+  </a>
+</section>
+
+<section id="rubriques">
+  <h2 class="section-title">Que veux-tu apprendre ?</h2>
+
+  <div class="cards">
+
+    <article class="card">
+      <h3>🎧 Compréhension orale</h3>
+      <p>Écoute des mots, des dialogues
+         et des histoires en français.</p>
+      <a href="#quiz">Découvrir →</a>
+    </article>
+
+    <article class="card">
+      <h3>📖 Compréhension écrite</h3>
+      <p>Lis des textes et découvre
+         de nouveaux mots.</p>
+      <a href="#quiz">Découvrir →</a>
+    </article>
+
+    <article class="card">
+      <h3>🎤 Production orale</h3>
+      <p>Apprends à prononcer des mots
+         et à t'exprimer en français.</p>
+      <a href="#assistant">Découvrir →</a>
+    </article>
+
+    <article class="card">
+      <h3>✍️ Production écrite</h3>
+      <p>Apprends à écrire des mots,
+         des phrases et des textes.</p>
+      <a href="#quiz">Découvrir →</a>
+    </article>
+
+    <article class="card">
+      <h3>💬 Interactions quotidiennes</h3>
+      <p>Salue, pose des questions
+         et dialogue en français.</p>
+      <a href="#assistant">Découvrir →</a>
+    </article>
+
+  </div>
+</section>
+
+<section class="levels" id="parcours">
+  <h2 class="section-title">Mon parcours en français</h2>
+  <p>Chaque jour, je progresse un peu plus !</p>
+
+  <div class="level-list">
+    <div class="level">Pré-A1</div>
+    <div class="level">A1</div>
+    <div class="level">A2</div>
+    <div class="level">B1</div>
+    <div class="level">B2</div>
+    <div class="level">C1</div>
+    <div class="level">C2</div>
+  </div>
+</section>
+
+<section id="quiz">
+  <h2 class="section-title">Mon premier quiz ! 🧠</h2>
+
+  <div class="quiz">
+    <h3>Comment dit-on « Bonjour » en anglais ?</h3>
+
+    <button onclick="verifier(false)">Goodbye</button>
+    <button onclick="verifier(true)">Hello</button>
+    <button onclick="verifier(false)">Thank you</button>
+
+    <p id="resultat" aria-live="polite"></p>
+  </div>
+</section>
+
+<section class="assistant" id="assistant">
+  <h2 class="section-title">🤖 Mon ami FLEmi</h2>
+  <p>Tu as une question ? Viens discuter avec ton assistant !</p>
+  <br>
+  <button class="btn" onclick="ouvrirChat()">
+    Discuter avec FLEmi
+  </button>
+</section>
+
+</main>
+
+<footer>
+  <p>© 2026 FLEmi – Apprendre le français pas à pas !</p>
+</footer>
+
+<button class="chat-button" onclick="ouvrirChat()">
+  💬 Mon ami FLEmi
+</button>
+
+<div class="chat-window" id="chat">
+  <div class="chat-header">
+    <strong>🤖 Bonjour ! Je suis FLEmi.</strong>
+    <button onclick="ouvrirChat()" style="float:right">
+      ✕
+    </button>
+  </div>
+
+  <div class="chat-messages" id="messages"
+       aria-live="polite">
+    <p><strong>FLEmi :</strong> Bonjour ! Comment
+       tu t'appelles ?</p>
+  </div>
+
+  <div class="chat-input">
+    <input id="message"
+           type="text"
+           placeholder="Écris ton message..."
+           onkeydown="if(event.key==='Enter') envoyer()">
+    <button onclick="envoyer()">Envoyer</button>
+  </div>
+</div>
+
+<script>
+function verifier(correct) {
+  const resultat = document.getElementById("resultat");
+
+  if (correct) {
+    resultat.textContent = "Bravo ! 🎉 Hello signifie Bonjour.";
+  } else {
+    resultat.textContent =
+      "Essaie encore ! Indice : c'est le mot pour saluer.";
+  }
+}
+
+function ouvrirChat() {
+  const chat = document.getElementById("chat");
+  chat.style.display =
+    chat.style.display === "block" ? "none" : "block";
+}
+
+function envoyer() {
+  const input = document.getElementById("message");
+  const messages = document.getElementById("messages");
+  const texte = input.value.trim();
+
+  if (!texte) return;
+
+  const question = document.createElement("p");
+  question.textContent = "Toi : " + texte;
+  messages.appendChild(question);
+
+  const reponse = document.createElement("p");
+  reponse.textContent =
+    "FLEmi : Merci pour ton message ! " +
+    "Dans cette version de démonstration, " +
+    "je peux seulement te répondre de manière limitée. " +
+    "Continuons à apprendre le français !";
+  messages.appendChild(reponse);
+
+  input.value = "";
+  messages.scrollTop = messages.scrollHeight;
+}
+</script>
+
+</body>
+</html>
+
